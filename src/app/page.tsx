@@ -8,6 +8,7 @@ import html2canvas from "html2canvas";
 import Formulaire from "@/components/Formulaire";
 import CarteRecto from "@/components/CarteRecto";
 import CarteVerso from "@/components/CarteVerso";
+import { FaDownload, FaRedo, FaEye, FaEyeSlash } from "react-icons/fa"; // Importer des icônes depuis react-icons
 
 export default function Home() {
   const [recipientName, setRecipientName] = useState("Nom du destinataire");
@@ -36,9 +37,16 @@ export default function Home() {
 
   const { width, height } = useWindowSize();
 
+  const resetForm = () => {
+    setRecipientName("Nom du destinataire");
+    setGiftDescription("Description ou valeur du cadeau");
+    setSenderName("Nom de l'expéditeur");
+    setIsValidated(false); // Revenir à l'état initial pour refaire le formulaire
+    setActiveCard("recto"); // Réinitialiser la vue de la carte à recto par défaut
+  };
+
   return (
     <div className="flex flex-col min-h-screen items-center bg-gray-200 py-10 relative">
-      {/* Animation des feux d'artifice */}
       {isValidated && (
         <div className="absolute inset-0 bg-transparent pointer-events-none">
           <div className="fireworks animation fireworks bg-transparent absolute inset-0 z-50" />
@@ -61,7 +69,6 @@ export default function Home() {
       ) : (
         <>
           <div className="w-full flex justify-center">
-            {/* Card Recto */}
             <div
               ref={rectoRef}
               className={`card recto bg-white border rounded-lg shadow-lg ${
@@ -72,7 +79,6 @@ export default function Home() {
               <CarteRecto recipientName={recipientName} />
             </div>
 
-            {/* Card Verso */}
             <div
               ref={versoRef}
               className={`card verso bg-white border rounded-lg shadow-lg ${
@@ -91,33 +97,39 @@ export default function Home() {
           <div className="flex justify-center space-x-6 mt-8">
             <button
               onClick={() => setActiveCard("recto")}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-blue-500 text-white rounded flex items-center"
             >
-              Voir Recto
+              <FaEye className="mr-2" /> Voir Recto
             </button>
             <button
               onClick={() => setActiveCard("verso")}
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-2 bg-green-500 text-white rounded flex items-center"
             >
-              Voir Verso
+              <FaEyeSlash className="mr-2" /> Voir Verso
             </button>
 
-            {/* Boutons pour télécharger les cartes sans passer par l'aperçu */}
             <button
               onClick={() => downloadImage(rectoRef, "recto.png")}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-blue-500 text-white rounded flex items-center"
             >
-              Télécharger Recto
+              <FaDownload className="mr-2" /> Télécharger Recto
             </button>
             <button
               onClick={() => downloadImage(versoRef, "verso.png")}
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-2 bg-green-500 text-white rounded flex items-center"
             >
-              Télécharger Verso
+              <FaDownload className="mr-2" /> Télécharger Verso
             </button>
           </div>
 
-          {/* Confetti animation (optionnel, seulement si la taille de la fenêtre est suffisante) */}
+          {/* Bouton pour réinitialiser */}
+          <button
+            onClick={resetForm} // Reset l'état du formulaire et les cartes
+            className="m-2 p-2 bg-gray-500 hover:bg-gray-400 text-white rounded flex items-center"
+          >
+            <FaRedo className="mr-2" /> Générer un autre souhait !
+          </button>
+
           {isValidated && width > 400 && height > 400 && (
             <Confetti width={width} height={height} />
           )}

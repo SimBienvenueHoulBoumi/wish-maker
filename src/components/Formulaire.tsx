@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import BeatLoader from "react-spinners/BeatLoader";
+
 interface FormProps {
   recipientName: string;
   giftDescription: string;
@@ -6,7 +11,7 @@ interface FormProps {
   setGiftDescription: (description: string) => void;
   setSenderName: (name: string) => void;
   onValidate: () => void;
-  initialRecipientName: string; // Ajout des valeurs initiales pour la comparaison
+  initialRecipientName: string;
   initialGiftDescription: string;
   initialSenderName: string;
 }
@@ -23,17 +28,16 @@ export default function Formulaire({
   initialGiftDescription,
   initialSenderName,
 }: FormProps) {
+  const [loading, setLoading] = useState(false);
 
-  // Fonction pour gérer la validation du nombre de mots
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     type: "recipient" | "gift" | "sender"
   ) => {
     const newValue = event.target.value;
-    const wordCount = newValue.split(/\s+/).filter(Boolean).length;  // Compte les mots
+    const wordCount = newValue.split(/\s+/).filter(Boolean).length;
 
-    // Limiter les mots pour chaque champ
-    const maxWords = type === "gift" ? 15 : 10; // Par exemple 15 mots max pour giftDescription, 10 mots max pour recipientName et senderName
+    const maxWords = type === "gift" ? 15 : 10;
 
     if (wordCount <= maxWords) {
       if (type === "recipient") {
@@ -46,13 +50,20 @@ export default function Formulaire({
     }
   };
 
-  // Fonction qui vérifie si tous les champs ont été modifiés par rapport à leur valeur initiale
   const isFormValid = () => {
     return (
       recipientName !== initialRecipientName ||
       giftDescription !== initialGiftDescription ||
       senderName !== initialSenderName
     );
+  };
+
+  const handleFormSubmit = () => {
+    setLoading(true);
+    setTimeout(() => {
+      onValidate();
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -103,11 +114,17 @@ export default function Formulaire({
       </form>
       <div className="mt-6 flex justify-center">
         <button
-          onClick={onValidate}
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
-          disabled={!isFormValid()} // Désactiver le bouton si le formulaire n'est pas valide
+          onClick={handleFormSubmit}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded ${
+            !isFormValid() || loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={!isFormValid() || loading} // Désactiver le bouton si le formulaire n'est pas valide ou si le chargement est en cours
         >
-          Valider
+          {loading ? (
+            <BeatLoader size={8} color="#fff" loading={loading} />
+          ) : (
+            "Valider"
+          )}
         </button>
       </div>
     </div>
