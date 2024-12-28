@@ -1,5 +1,8 @@
 "use client";
 
+import { useWindowSize } from "react-use";
+import Confetti from "react-confetti";
+
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import Formulaire from "@/components/Formulaire";
@@ -7,14 +10,10 @@ import CarteRecto from "@/components/CarteRecto";
 import CarteVerso from "@/components/CarteVerso";
 
 export default function Home() {
-  const [recipientName, setRecipientName] = useState<string>(
-    "Nom du destinataire"
-  );
-  const [giftDescription, setGiftDescription] = useState<string>(
-    "Description ou valeur du cadeau"
-  );
-  const [senderName, setSenderName] = useState<string>("Nom de l'expéditeur");
-  const [isValidated, setIsValidated] = useState<boolean>(false);
+  const [recipientName, setRecipientName] = useState("Nom du destinataire");
+  const [giftDescription, setGiftDescription] = useState("Description ou valeur du cadeau");
+  const [senderName, setSenderName] = useState("Nom de l'expéditeur");
+  const [isValidated, setIsValidated] = useState(false);
   const [activeCard, setActiveCard] = useState<"recto" | "verso">("recto");
 
   const rectoRef = useRef<HTMLDivElement>(null);
@@ -34,6 +33,8 @@ export default function Home() {
       });
     }
   };
+
+  const { width, height } = useWindowSize();
 
   return (
     <div className="flex flex-col min-h-screen items-center bg-gray-200 py-10 relative">
@@ -115,6 +116,11 @@ export default function Home() {
               Télécharger Verso
             </button>
           </div>
+
+          {/* Confetti animation (optionnel, seulement si la taille de la fenêtre est suffisante) */}
+          {isValidated && width > 400 && height > 400 && (
+            <Confetti width={width} height={height} />
+          )}
         </>
       )}
     </div>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import { Toaster } from "react-hot-toast";
 
 const myFont = localFont({ src: "./fonts/LInternationale.ttf" });
 
@@ -21,7 +20,6 @@ export default function RootLayout({
         className={`${myFont.className} antialiased`}
         suppressHydrationWarning
       >
-        <Toaster />
         {children}
       </body>
     </html>
