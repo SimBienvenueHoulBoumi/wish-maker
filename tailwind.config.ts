@@ -8,9 +8,24 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      animation: {
+        fireworks: "fireworks 3s ease-out forwards",
+      },
+      keyframes: {
+        fireworks: {
+          "0%": {
+            opacity: "1",
+            transform: "scale(0) translate(-50%, -50%)",
+          },
+          "50%": {
+            opacity: "0.6",
+            transform: "scale(3) translate(-50%, -50%)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "scale(5) translate(-50%, -50%)",
+          },
+        },
       },
     },
   },
