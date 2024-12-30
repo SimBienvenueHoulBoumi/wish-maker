@@ -8,11 +8,13 @@ import html2canvas from "html2canvas";
 import Formulaire from "@/components/Formulaire";
 import CarteRecto from "@/components/CarteRecto";
 import CarteVerso from "@/components/CarteVerso";
-import { FaDownload, FaRedo, FaEye, FaEyeSlash } from "react-icons/fa"; // Importer des icônes depuis react-icons
+import { FaDownload, FaRedo, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Home() {
   const [recipientName, setRecipientName] = useState("Nom du destinataire");
-  const [giftDescription, setGiftDescription] = useState("Description ou valeur du cadeau");
+  const [giftDescription, setGiftDescription] = useState(
+    "Description ou valeur du cadeau"
+  );
   const [senderName, setSenderName] = useState("Nom de l'expéditeur");
   const [isValidated, setIsValidated] = useState(false);
   const [activeCard, setActiveCard] = useState<"recto" | "verso">("recto");
@@ -41,48 +43,52 @@ export default function Home() {
     setRecipientName("Nom du destinataire");
     setGiftDescription("Description ou valeur du cadeau");
     setSenderName("Nom de l'expéditeur");
-    setIsValidated(false); // Revenir à l'état initial pour refaire le formulaire
-    setActiveCard("recto"); // Réinitialiser la vue de la carte à recto par défaut
+    setIsValidated(false);
+    setActiveCard("recto");
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center bg-gray-200 py-10 relative">
+    <div className="flex flex-col min-h-screen items-center bg-christmas py-10 relative">
       {isValidated && (
         <div className="absolute inset-0 bg-transparent pointer-events-none">
           <div className="fireworks animation fireworks bg-transparent absolute inset-0 z-50" />
         </div>
       )}
-
       {!isValidated ? (
-        <Formulaire
-          recipientName={recipientName}
-          giftDescription={giftDescription}
-          senderName={senderName}
-          setRecipientName={setRecipientName}
-          setGiftDescription={setGiftDescription}
-          setSenderName={setSenderName}
-          onValidate={() => setIsValidated(true)}
-          initialRecipientName="wishmaker"
-          initialGiftDescription="joyeuses fêtes"
-          initialSenderName="simdev"
-        />
+        <div className="relative">
+
+          <Formulaire
+            recipientName={recipientName}
+            giftDescription={giftDescription}
+            senderName={senderName}
+            setRecipientName={setRecipientName}
+            setGiftDescription={setGiftDescription}
+            setSenderName={setSenderName}
+            onValidate={() => setIsValidated(true)}
+            initialRecipientName="wishmaker"
+            initialGiftDescription="joyeuses fêtes"
+            initialSenderName="simdev"
+          />
+        </div>
       ) : (
         <>
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center relative">
+            {/* Carte Recto */}
             <div
               ref={rectoRef}
               className={`card recto bg-white border rounded-lg shadow-lg ${
-                activeCard === "recto" ? "block" : "hidden"
+                activeCard === "recto" ? "block relative z-10" : "hidden"
               }`}
               style={{ height: "auto", boxSizing: "border-box" }}
             >
               <CarteRecto recipientName={recipientName} />
             </div>
 
+            {/* Carte Verso */}
             <div
               ref={versoRef}
               className={`card verso bg-white border rounded-lg shadow-lg ${
-                activeCard === "verso" ? "block" : "hidden"
+                activeCard === "verso" ? "block relative z-10" : "hidden"
               }`}
               style={{ height: "auto", boxSizing: "border-box" }}
             >
@@ -122,9 +128,8 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Bouton pour réinitialiser */}
           <button
-            onClick={resetForm} // Reset l'état du formulaire et les cartes
+            onClick={resetForm}
             className="m-2 p-2 bg-gray-500 hover:bg-gray-400 text-white rounded flex items-center"
           >
             <FaRedo className="mr-2" /> Générer un autre souhait !

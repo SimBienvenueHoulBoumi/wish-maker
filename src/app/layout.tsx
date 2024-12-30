@@ -1,3 +1,4 @@
+import SnowEffect from "@/components/SnowEffect"; // Assurez-vous que le chemin est correct
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
@@ -20,6 +21,7 @@ export default function RootLayout({
         className={`${myFont.className} antialiased`}
         suppressHydrationWarning
       >
+        <SnowEffect />
         {children}
       </body>
     </html>

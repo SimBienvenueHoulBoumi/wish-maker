@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import BeatLoader from "react-spinners/BeatLoader";
+import Image from "next/image"; // Import de Image
 
 interface FormProps {
   recipientName: string;
@@ -29,6 +30,7 @@ export default function Formulaire({
   initialSenderName,
 }: FormProps) {
   const [loading, setLoading] = useState(false);
+  const [isValidated, setIsValidated] = useState(false); // État pour savoir si le formulaire est validé
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -61,16 +63,28 @@ export default function Formulaire({
   const handleFormSubmit = () => {
     setLoading(true);
     setTimeout(() => {
+      setIsValidated(true); // Mise à jour de l'état pour afficher le chapeau de Noël
       onValidate();
       setLoading(false);
     }, 2000);
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-lg mt-8 w-96">
+    <div className="bg-white p-6 rounded shadow-lg mt-14 w-96 relative">
+      {/* Affichage du chapeau de Noël conditionnellement selon la validation */}
+      {!isValidated && (
+        <Image
+          src="/images/chapeau-noel-removebg.png"
+          alt="Chapeau de Noël"
+          width={150}
+          height={100}
+          className="-mt-24 -ml-24 p-2"
+        />
+      )}
       <h2 className="font-bold text-2xl text-center text-gray-700 mb-6">
         Personnalisez votre carte
       </h2>
+
       <form className="flex flex-col space-y-4">
         <label className="flex flex-col">
           <span className="font-semibold text-gray-600">
@@ -112,6 +126,7 @@ export default function Formulaire({
           />
         </label>
       </form>
+
       <div className="mt-6 flex justify-center">
         <button
           onClick={handleFormSubmit}
