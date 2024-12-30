@@ -70,7 +70,7 @@ export default function Formulaire({
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-lg mt-14 w-96 relative">
+    <div className="bg-white p-6 rounded shadow-lg mt-14 w-[420px] relative">
       {/* Affichage du chapeau de Noël conditionnellement selon la validation */}
       {!isValidated && (
         <Image
@@ -138,7 +138,9 @@ export default function Formulaire({
           {loading ? (
             <BeatLoader size={8} color="#fff" loading={loading} />
           ) : (
-            "Valider"
+            <div className="flex items-center space-x-2">
+              <p className="text-lg font-medium">Valider</p>
+            </div>
           )}
         </button>
       </div>
